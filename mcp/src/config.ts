@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { config as loadDotenv } from 'dotenv';
 import { z } from 'zod';
 
 const environmentSchema = z.object({
@@ -22,10 +23,18 @@ export type AppConfig = {
 };
 
 export class ConfigLoader {
+  public loadEnvironmentFiles(paths?: string[]): void {
+    const repositoryRoot = this.getRepositoryRoot();
+    loadDotenv({
+      path: paths ?? [path.join(repositoryRoot, 'mcp', '.env'), path.join(repositoryRoot, '.env')],
+      override: false,
+      quiet: true,
+    });
+  }
+
   public load(environment: NodeJS.ProcessEnv = process.env): AppConfig {
     const parsed = environmentSchema.parse(environment);
-    const packageDirectory = path.dirname(fileURLToPath(import.meta.url));
-    const repositoryRoot = path.resolve(packageDirectory, '..', '..');
+    const repositoryRoot = this.getRepositoryRoot();
 
     return {
       apiKey: parsed.OLLAMA_API_KEY,
@@ -37,5 +46,10 @@ export class ConfigLoader {
       ementasDirectory: path.join(repositoryRoot, 'files', 'ementas'),
       cacheFile: path.join(repositoryRoot, '.cache', 'ementas.json'),
     };
+  }
+
+  private getRepositoryRoot(): string {
+    const packageDirectory = path.dirname(fileURLToPath(import.meta.url));
+    return path.resolve(packageDirectory, '..', '..');
   }
 }

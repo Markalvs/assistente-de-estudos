@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('pdf-parse', () => ({ default: vi.fn(async () => ({ text: 'PDF content' })) }));
+vi.mock('pdf-parse/lib/pdf-parse.js', () => ({ default: vi.fn(async () => ({ text: 'PDF content' })) }));
 vi.mock('mammoth', () => ({ default: { extractRawText: vi.fn(async () => ({ value: 'DOCX content' })) } }));
 
 import { EmentaRepository } from '../ementa-repository.js';

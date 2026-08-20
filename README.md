@@ -29,7 +29,7 @@ Install dependencies from the repository root:
 corepack pnpm install
 ```
 
-Copy `mcp/.env.example` to `mcp/.env` and provide the API key:
+Copy `mcp/.env.example` to either `.env` in the repository root or `mcp/.env`, then provide the API key:
 
 ```dotenv
 OLLAMA_API_KEY=your-key
@@ -45,6 +45,8 @@ MCP_PORT=3000
 ```
 
 Environment files are ignored by Git. Never commit an API key.
+
+The application resolves both locations explicitly, regardless of the directory from which pnpm starts the package. Existing system environment variables take precedence; when both files define the same variable, `mcp/.env` takes precedence over the root `.env`.
 
 Place syllabus files directly inside `files/ementas`, then start the development server:
 
@@ -83,6 +85,8 @@ corepack pnpm typecheck # Check strict TypeScript types
 corepack pnpm lint      # Run ESLint
 corepack pnpm test      # Run the Vitest suite
 ```
+
+`dev` and `build` never run the test suite. Production compilation also excludes `src/__tests__`, so test fixtures and mocks cannot be loaded by the server or emitted into `dist`.
 
 Generated analysis is stored in `.cache/ementas.json`. Cache entries are invalidated when a document's size or modification time changes. A valid cached result remains usable if Ollama Cloud is temporarily unavailable.
 

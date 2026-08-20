@@ -1,7 +1,9 @@
 import { lstat, readFile, readdir, realpath, stat } from 'node:fs/promises';
 import path from 'node:path';
 import mammoth from 'mammoth';
-import pdf from 'pdf-parse';
+// The package root runs pdf-parse's bundled demo under some ESM loaders.
+// Importing the parser implementation avoids that side effect in dev and production.
+import pdf from 'pdf-parse/lib/pdf-parse.js';
 import { supportedExtensionSchema, type EmentaMetadata } from './domain.js';
 
 export type EmentaDocument = {

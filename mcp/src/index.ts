@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { ConfigLoader } from './config.js';
 import { EmentaCacheStore } from './cache-store.js';
 import { GenkitOllamaEmentaAnalyzer } from './ementa-analyzer.js';
@@ -8,7 +7,9 @@ import { StudyMcpServerFactory } from './mcp-server.js';
 import { StudyAssistantApp } from './app.js';
 
 try {
-  const config = new ConfigLoader().load();
+  const configLoader = new ConfigLoader();
+  configLoader.loadEnvironmentFiles();
+  const config = configLoader.load();
   const repository = new EmentaRepository(config.ementasDirectory);
   const cache = new EmentaCacheStore(config.cacheFile);
   const analyzer = new GenkitOllamaEmentaAnalyzer({
