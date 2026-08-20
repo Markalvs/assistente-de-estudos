@@ -1,0 +1,13 @@
+{
+  "name": "study-assistant",
+  "private": true,
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "build": "pnpm --filter @study-assistant/mcp build",
+    "dev": "pnpm --filter @study-assistant/mcp dev",
+    "lint": "pnpm --filter @study-assistant/mcp lint",
+    "start": "pnpm --filter @study-assistant/mcp start",
+    "test": "pnpm --filter @study-assistant/mcp test",
+    "typecheck": "pnpm --filter @study-assistant/mcp typecheck"
+  }
+}
